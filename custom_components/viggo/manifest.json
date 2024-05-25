@@ -1,11 +1,11 @@
 {
   "domain": "viggo",
   "name": "Viggo",
-  "documentation": "https://github.com/J-Lindvig/Viggo",
-  "issue_tracker": "https://github.com/J-Lindvig/Viggo/issues",
+  "documentation": "https://github.com/Smeltvig/Viggo",
+  "issue_tracker": "https://github.com/Smeltvig/Viggo/issues",
   "dependencies": [],
   "after_dependencies": [],
-  "codeowners": ["@J-Lindvig"],
+  "codeowners": ["@Smeltvig"],
   "requirements": ["beautifulsoup4", "html.parser"],
   "iot_class": "cloud_polling",
   "version": "0.4.3.1"

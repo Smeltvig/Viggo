@@ -196,7 +196,7 @@ class viggo_api:
         # For every relation
         for id, relation in self.relations.items():
             # Fetch the schedule
-            _LOGGER.debug("URL: ({self.baseUrl + URLS[SCHEDULE] + id})")
+            _LOGGER.debug("URL: (self.baseUrl + URLS[SCHEDULE] + id)")
             soup = self._fetchHtml(self.baseUrl + URLS[SCHEDULE] + id)
             if soup:
                 # Find every event

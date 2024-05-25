@@ -18,4 +18,4 @@ CONF_USERNAME = "username"
 DOMAIN = "viggo"
 UPDATE_INTERVAL = 60
 
-CREDITS = "J-Lindvig (https://github.com/J-Lindvig)"
+CREDITS = "Smeltvig (https://github.com/Smeltvig)"

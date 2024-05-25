@@ -184,7 +184,7 @@ class viggo_api:
             )
 
             # There are a 2nd <li> ignore
-            #break
+            break
 
         # Extract URL for the schedule
         url_payload = re.search(
@@ -196,7 +196,7 @@ class viggo_api:
         # For every relation
         for id, relation in self.relations.items():
             # Fetch the schedule
-            _LOGGER.debug(f"URL: ({self.baseUrl + URLS[SCHEDULE] + id})")
+            _LOGGER.debug("URL: ({self.baseUrl + URLS[SCHEDULE] + id})")
             soup = self._fetchHtml(self.baseUrl + URLS[SCHEDULE] + id)
             if soup:
                 # Find every event

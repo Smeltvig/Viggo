@@ -188,7 +188,7 @@ class viggo_api:
 
         # Extract URL for the schedule
         url_payload = re.search(
-            "viggo.ajax.loadHtml(`(.*)\?(.*)`", soup.find("script").text
+            "viggo.ajax.loadHtml\(`(.*)\?(.*)`", soup.find("script").text
         )
         URLS[SCHEDULE] = url_payload.group(1) + "?" + HOME + VIEW + AJAX + USER_ID
 

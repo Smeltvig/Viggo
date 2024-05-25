@@ -17,5 +17,7 @@ CONF_USERNAME = "username"
 
 DOMAIN = "viggo"
 UPDATE_INTERVAL = 60
-
-CREDITS = "Smeltvig (https://github.com/Smeltvig)"
+CREDITS = [
+    {"Created by": "Smeltvig (https://github.com/Smeltvig)"},
+    {"Forked from": "J-Lindvig (https://github.com/J-Lindvig)"}
+]

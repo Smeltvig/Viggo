@@ -184,7 +184,7 @@ class viggo_api:
             )
 
             # There are a 2nd <li> ignore
-            break
+            #break
 
         # Extract URL for the schedule
         url_payload = re.search(

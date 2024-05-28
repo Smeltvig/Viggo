@@ -177,7 +177,7 @@ class viggo_api:
         soup = self._fetchHtml(self.baseUrl + URLS[RELATIONS])
 
         # Extract relations
-        for relations in soup.find("ul").find_all("li"):
+        for relations in soup.find("ul").find_all("li", attrs={'data-relation-id': True}):
             id = relations["data-relation-id"]
             self.relations[str(id)] = relation(
                 id, relations.a.text, relations.img["src"]

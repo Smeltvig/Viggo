@@ -199,7 +199,7 @@ class ViggoRelationSensor(SensorEntity):
                         "location": event.location,
                     }
                 )
-
+        attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
         return attr
 
     @property

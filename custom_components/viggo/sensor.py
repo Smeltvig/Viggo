@@ -193,7 +193,7 @@ class ViggoRelationSensor(SensorEntity):
             for event in self.relation.schedule:
                 attr[ATTR_SCHEDULE].append(
                     {
-                        "test": self.relation.name,
+                        "relationId": event.relationId,
                         "date_start": event.dateStart,
                         "date_end": event.dateEnd,
                         "title": event.title,

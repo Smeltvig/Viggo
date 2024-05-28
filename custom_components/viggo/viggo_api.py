@@ -222,6 +222,7 @@ class viggo_api:
                             )
                         relation.addEvent(
                             event(
+                                id,
                                 dates,
                                 eventTags.strong.text,
                                 eventTags.find("small", class_="p").text.strip("( )"),
@@ -362,9 +363,10 @@ class relation:
 
 
 class event:
-    dateStart, dateEnd, title, location = None, None, None, None
+    relationId, dateStart, dateEnd, title, location = None, None, None, None, None
 
-    def __init__(self, dates, title, location):
+    def __init__(self, relationId, dates, title, location):
+        self.relationId = relationId
         self.dateStart = dates[0]
         self.dateEnd = dates[1]
         self.title = title

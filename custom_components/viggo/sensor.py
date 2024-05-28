@@ -186,20 +186,22 @@ class ViggoRelationSensor(SensorEntity):
         attr = {
             ATTR_ENTITY_PICTURE: self.relation.image,
             ATTR_ATTRIBUTION: CREDITS,
-            "relation_name": self.relation.name
+            "relation_name": self.relation.name,
+            "relation_id": self.relation.id,
         }
         if self.showSchedule:
             attr[ATTR_SCHEDULE] = []
             for event in self.relation.schedule:
-                attr[ATTR_SCHEDULE].append(
-                    {
-                        "relationId": event.relationId,
-                        "date_start": event.dateStart,
-                        "date_end": event.dateEnd,
-                        "title": event.title,
-                        "location": event.location,
-                    }
-                )
+                 if event.relationId == self.relation.id:
+                    attr[ATTR_SCHEDULE].append(
+                        {
+                            "relation_id": event.relationId,
+                            "date_start": event.dateStart,
+                            "date_end": event.dateEnd,
+                            "title": event.title,
+                            "location": event.location,
+                        }
+                    )
 
         attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
         #res_list = [i for n, i in enumerate(attr[ATTR_SCHEDULE])

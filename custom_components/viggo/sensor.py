@@ -198,6 +198,7 @@ class ViggoRelationSensor(SensorEntity):
                             "date_start": event.dateStart,
                             "date_end": event.dateEnd,
                             "time_start": event.dateStart.strftime('%H:%M'),
+                            "time_end": event.dateEnd.strftime('%H:%M'),
                             "title": event.title,
                             "location": event.location,
                         }

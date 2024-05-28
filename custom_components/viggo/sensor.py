@@ -164,6 +164,10 @@ class ViggoRelationSensor(SensorEntity):
     @property
     def name(self):
         return self.schoolName + " " + self.relation.name
+    
+    @property
+    def relation_name(self):
+        return self.relation.name
 
     @property
     def icon(self):

@@ -26,6 +26,7 @@ ATTR_SCHEDULE = "schedule"
 ATTR_SCHOOL_LOGO = "school_logo_url"
 ATTR_USER_IMAGE = "user_image"
 
+
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 _LOGGER = logging.getLogger(__name__)
 
@@ -166,10 +167,6 @@ class ViggoRelationSensor(SensorEntity):
         return self.schoolName + " " + self.relation.name
     
     @property
-    def relation_name(self):
-        return self.relation.name
-
-    @property
     def icon(self):
         return "mdi:account-school"
 
@@ -189,6 +186,7 @@ class ViggoRelationSensor(SensorEntity):
         attr = {
             ATTR_ENTITY_PICTURE: self.relation.image,
             ATTR_ATTRIBUTION: CREDITS,
+            "relation_name": self.relation.name
         }
         if self.showSchedule:
             attr[ATTR_SCHEDULE] = []

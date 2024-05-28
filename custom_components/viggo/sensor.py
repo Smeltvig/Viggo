@@ -204,10 +204,10 @@ class ViggoRelationSensor(SensorEntity):
                         }
                     )
 
-        attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
         res_list = [i for n, i in enumerate(attr[ATTR_SCHEDULE])
             if i not in attr[ATTR_SCHEDULE][:n]]
         attr[ATTR_SCHEDULE] = res_list
+        attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
         return attr
 
     @property

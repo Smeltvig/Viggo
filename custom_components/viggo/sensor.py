@@ -23,6 +23,7 @@ from homeassistant.const import ATTR_ATTRIBUTION, ATTR_ENTITY_PICTURE
 ATTR_BULLETINS = "bulletins"
 ATTR_MESSAGES = "messages"
 ATTR_SCHEDULE = "schedule"
+ATTR_HOMEWORKANDASSIGNMENT = "homework"
 ATTR_SCHOOL_LOGO = "school_logo_url"
 ATTR_USER_IMAGE = "user_image"
 
@@ -95,6 +96,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
                     viggo.schoolName,
                     viggo.fingerPrint,
                     conf["schedule"],
+                    conf["homework"],
                 )
             )
     async_add_entities(sensors)
@@ -154,13 +156,14 @@ class ViggoUserSensor(SensorEntity):
 
 class ViggoRelationSensor(SensorEntity):
     def __init__(
-        self, coordinator, relation, schoolName, fingerPrint, showSchedule
+        self, coordinator, relation, schoolName, fingerPrint, showSchedule, showHomework
     ) -> None:
         self.coordinator = coordinator
         self.relation = relation
         self.schoolName = schoolName
         self.fingerPrint = fingerPrint
         self.showSchedule = showSchedule
+        self.showHomework = showHomework
 
     @property
     def name(self):
@@ -191,6 +194,7 @@ class ViggoRelationSensor(SensorEntity):
         }
         if self.showSchedule:
             attr[ATTR_SCHEDULE] = []
+            attr[ATTR_HOMEWORKANDASSIGNMENT] = []
             for event in self.relation.schedule:
                  if event.relationId == self.relation.id:
                     attr[ATTR_SCHEDULE].append(
@@ -203,11 +207,29 @@ class ViggoRelationSensor(SensorEntity):
                             "location": event.location,
                         }
                     )
+            res_list = [i for n, i in enumerate(attr[ATTR_SCHEDULE])
+                if i not in attr[ATTR_SCHEDULE][:n]]
+            attr[ATTR_SCHEDULE] = res_list
+            attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
 
-        res_list = [i for n, i in enumerate(attr[ATTR_SCHEDULE])
-            if i not in attr[ATTR_SCHEDULE][:n]]
-        attr[ATTR_SCHEDULE] = res_list
-        attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
+
+            for event in self.relation.homework:
+                 if event.relationId == self.relation.id:
+                    attr[ATTR_HOMEWORKANDASSIGNMENT].append(
+                        {
+                            "date_start": event.dateStart,
+                            "date_end": event.dateEnd,
+                            "time_start": event.dateStart.strftime('%H:%M'),
+                            "time_end": event.dateEnd.strftime('%H:%M'),
+                            "title": event.title,
+                            "message": event.message,
+                        }
+                    )
+            
+            res_list = [i for n, i in enumerate(attr[ATTR_HOMEWORKANDASSIGNMENT])
+                if i not in attr[ATTR_HOMEWORKANDASSIGNMENT][:n]]
+            attr[ATTR_HOMEWORKANDASSIGNMENT] = res_list
+            attr[ATTR_HOMEWORKANDASSIGNMENT].sort(key=lambda x: x['date_start'])
         return attr
 
     @property

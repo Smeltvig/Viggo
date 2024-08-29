@@ -8,5 +8,5 @@
   "codeowners": ["@Smeltvig"],
   "requirements": ["beautifulsoup4", "html.parser"],
   "iot_class": "cloud_polling",
-  "version": "0.4.3.2"
+  "version": "0.5.0.0"
 }

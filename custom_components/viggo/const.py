@@ -7,6 +7,7 @@ CONF_DEFAULT = {
     "details": ["sender_name", "date", "subject", "preview", "sender_image"],
     "relations": True,
     "schedule": True,
+    "homework": True,
 }
 CONF_SHOW = "show"
 CONF_PASSWORD = "password"

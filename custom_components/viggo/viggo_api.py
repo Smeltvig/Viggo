@@ -13,6 +13,7 @@ import requests
 import os
 import re
 import gc
+import json
 
 DEBUG = False
 
@@ -34,6 +35,7 @@ MSG_FOLDER = "MSG_FOLDER"
 MSG_FOLDERS = "MSG_FOLDERS"
 RELATIONS = "RELATIONS"
 SCHEDULE = "SCHEDULE"
+HOMEWORKANDASSIGNMENT = "HOMEWORKANDASSIGNMENT"
 
 MONTHS = [
     "jan",
@@ -77,6 +79,8 @@ class viggo_api:
 
         self._fetchRelations()
         self._fetchSchedule()
+
+        self._fetchHomework()
 
         self._fetchFolders()
         self._fetchMsg()
@@ -191,7 +195,44 @@ class viggo_api:
             "viggo.ajax.loadHtml\(`(.*)\?(.*)`", soup.find("script").text
         )
         URLS[SCHEDULE] = url_payload.group(1) + "?" + HOME + VIEW + AJAX + USER_ID
+        URLS[HOMEWORKANDASSIGNMENT] =  "/Basic/HomeworkAndAssignment" + "?" + HOME + VIEW + AJAX + USER_ID
 
+    def _fetchHomework(self):
+        # For every relation
+        for id, relation in self.relations.items():
+            # Fetch the Homework
+            _LOGGER.debug("URL: (self.baseUrl + URLS[HOMEWORKANDASSIGNMENT] + id)")
+            soup = self._fetchHtml(self.baseUrl + URLS[HOMEWORKANDASSIGNMENT] + id)
+            if soup:
+                weeks = soup.find_all("div", class_="week")
+                for weekTags in weeks:
+                    events = weekTags.find_all("div")
+                    for eventTags in events:
+                        if "class" in eventTags.attrs and len(eventTags["class"]) == 0:
+                            dates = []
+                            title = eventTags.select_one(".list-icons li a[class='ajaxModal'] strong").text
+                            message = eventTags.select_one(".list-icons li small div[class='content']").text
+                            dm = eventTags.select_one("p small").text
+                            dm = dm.replace(" ", "")
+                            mm = str(dm).split(".")[-1]
+                            m = str(MONTHS.index(mm.lower()) + 1).zfill(2)
+                            d = dm.split(".")[0]
+                            tt = eventTags.select_one(".list-icons li p").text
+                            tt = tt.replace(" ", "").replace("\r", "").replace("\n", "")
+                            y = datetime.today().year
+                            for t in tt.split("-"):
+                                dates.append(
+                                    datetime.strptime(f"{d}-{m}-{y} {t}", "%d-%m-%Y %H:%M")
+                                )
+                            relation.addhomework(
+                                homeworkEvent(
+                                    id,
+                                    dates,
+                                    title,
+                                    message,
+                                )
+                            )
+    
     def _fetchSchedule(self):
         # For every relation
         for id, relation in self.relations.items():
@@ -352,6 +393,7 @@ class viggo_api:
 class relation:
     id, name, image = None, None, None
     schedule = []
+    homework = []
 
     def __init__(self, id, name, image):
         self.id = id
@@ -360,6 +402,43 @@ class relation:
 
     def addEvent(self, event: object):
         self.schedule.append(event)
+
+    def addhomework(self, event: object):
+        self.homework.append(event)
+
+        def sdsd(obj):
+            res = {}
+            for k in dir(obj):
+                if not k.startswith("_"):
+                    v = getattr(obj, k)
+                    if isinstance(v, int | str ):
+                        res[k] = v
+                    
+
+                    elif isinstance(v, datetime):
+                        res[k] = v.isoformat()
+                    elif isinstance(v, list):
+                        res[k] = []
+                        for j in v:
+                            res[k].append(sdsd(j))
+                        #setattr(res,k,v)
+                        #print(k)
+            return res
+                
+        res = sdsd(self)
+
+        return json.dumps(res)
+
+class homeworkEvent:
+    relationId, dateStart, dateEnd, title, message = None, None, None, None, None
+    
+
+    def __init__(self, relationId, dates, title, message):
+        self.relationId = relationId
+        self.dateStart = dates[0]
+        self.dateEnd = dates[1]
+        self.title = title
+        self.message = message
 
 
 class event:

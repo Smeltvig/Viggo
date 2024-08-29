@@ -211,8 +211,9 @@ class ViggoRelationSensor(SensorEntity):
                 if i not in attr[ATTR_SCHEDULE][:n]]
             attr[ATTR_SCHEDULE] = res_list
             attr[ATTR_SCHEDULE].sort(key=lambda x: x['date_start'])
+        
 
-
+        if self.showHomework:
             for event in self.relation.homework:
                  if event.relationId == self.relation.id:
                     attr[ATTR_HOMEWORKANDASSIGNMENT].append(
@@ -230,6 +231,7 @@ class ViggoRelationSensor(SensorEntity):
                 if i not in attr[ATTR_HOMEWORKANDASSIGNMENT][:n]]
             attr[ATTR_HOMEWORKANDASSIGNMENT] = res_list
             attr[ATTR_HOMEWORKANDASSIGNMENT].sort(key=lambda x: x['date_start'])
+
         return attr
 
     @property

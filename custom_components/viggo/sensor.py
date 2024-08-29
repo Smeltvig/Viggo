@@ -194,7 +194,6 @@ class ViggoRelationSensor(SensorEntity):
         }
         if self.showSchedule:
             attr[ATTR_SCHEDULE] = []
-            attr[ATTR_HOMEWORKANDASSIGNMENT] = []
             for event in self.relation.schedule:
                  if event.relationId == self.relation.id:
                     attr[ATTR_SCHEDULE].append(
@@ -214,6 +213,7 @@ class ViggoRelationSensor(SensorEntity):
         
 
         if self.showHomework:
+            attr[ATTR_HOMEWORKANDASSIGNMENT] = []
             for event in self.relation.homework:
                  if event.relationId == self.relation.id:
                     attr[ATTR_HOMEWORKANDASSIGNMENT].append(
